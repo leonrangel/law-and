@@ -1,0 +1,544 @@
+    <ons-navigator swipeable id="logginNavigator" page="loggin.html"  ></ons-navigator>
+    <template id="loggin.html" side="right">
+		 <ons-page>
+			<ons-toolbar style="background-color: transparent;">
+			<div class="center">Inicia Sesión</div>
+		   </ons-toolbar>
+		   <p style="font-size: 15px; line-height: 18px; padding: 15px;">Ingresa para poder agendar una cita o llamada con el equipo de asesoría en derecho laboral y fiscal ideal para ti y lleva un control de todos tus asuntos legales<b> sin ningún costo.</b></p>
+		   <ons-card style="margin-top: 10px;">
+		    <p>
+			      <ons-input id="username" style="width: 100%"  modifier="material transparent " placeholder="{{Placeuser}}" float ></ons-input>
+			    </p>
+			    <p>
+			      <ons-input id="password" style="width: 100%"  modifier="material transparent " type="password" placeholder="{{Pplacepassword}}" float></ons-input>
+			    </p>
+			    <p style="margin-top: 30px;">
+			      <ons-button onclick="login()" modifier="large" style="width: 100%;">{{Button}}</ons-button>
+			    </p>
+			  </div>
+			  <ons-list modifier="inset">
+		        <ons-list-item tappable onclick="changeONPage('register.html')" ><a>{{link1}}</a></ons-list-item>
+		        <ons-list-item tappable onclick="changeONPage('reset.html')" ><a>{{link2}}</a></ons-list-item>
+		        <ons-list-item tappable onclick="changeONPage('problems.html')" ><a>{{link3}}</a></ons-list-item>
+		       </ons-list>
+			  </ons-card>
+		  </ons-page>
+    </template>
+    <template id="register.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link1}}</div>
+		   </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		    <p>
+		      <ons-input id="registernombre" style="width: 100%" modifier="underbar" placeholder="{{Nombre}}" float></ons-input>
+		    </p>
+		    <p>
+		      <ons-input id="registerapellido" style="width: 100%" modifier="underbar" placeholder="{{Apellidos}}" float></ons-input>
+		    </p>
+		    <p>
+		      <ons-input id="registerusername" style="width: 100%" modifier="underbar" placeholder="{{Placeuser}}" type="email" float></ons-input>
+		    </p>
+		    <p>
+		      <ons-input id="registerpassword" style="width: 100%" modifier="underbar" type="password" placeholder="{{Pplacepassword}}" float></ons-input>
+		    </p>
+		    <!--<p style="margin-top: 40px;">
+		    	<i>Crear cuenta como abogado</i> <ons-switch id="switch-type" modifier="material modifier2" onchange="validateRole()" ></ons-switch>
+		    </p>-->
+		    <p style="margin-top: 40px; text-align:justify">
+		    	En esta primera etapa del registro te pedimos los datos mínimos para crear tu cuenta, da click "continuar" y acompleta tu registro.
+		    </p>
+		    <div id="toabogado" style="display:none;">
+		    <ons-button onclick="ValidateRegistesFirtsPart('register2.html')" modifier="large">{{{Button3}}}</ons-button>
+		    </div>
+
+		    <div id="tocliente" >
+		    <!--<ons-button onclick="ValidateRegistesFirtsPart('register3.html')" modifier="large">{{{Button5}}}</ons-button>-->
+		    <ons-button onclick="ValidateRegistesFirtsPart('register3.html')" modifier="large">Continuar</ons-button>
+		    </div>
+		</div>
+		   </ons-card >
+		</ons-page>
+	</template>
+
+	<script type="text/javascript">
+		function ValidateRegistesFirtsPart(page){
+		 	var nombre   = $('#registernombre').val();
+		 	var apellido = $('#registerapellido').val();
+		 	var email    = $('#registerusername').val();
+		 	var password = $('#registerpassword').val();
+
+		 	if(nombre == ''){ 
+		 		ons.notification.alert('Necesitas poner un nombre');
+		    }else if (apellido == '') {  
+		   	 	ons.notification.alert('Necesitas poner un apellido');
+		    }else if (email == '') {
+		    	ons.notification.alert('Necesitas poner un email');
+		    }else if (email != '') {
+		    if (!isValidEmailAddress(email)) {
+	    		ons.notification.alert('La composición del email es invalido');
+		        return false;  
+		    }else if (password == ''){
+		 		ons.notification.alert('Necesitas poner una contraseña');
+		 	}else if (password != '') {
+		 	if (password.length <= 7){
+		 	   ons.notification.alert('La contraseña que has agregado es muy corta necesitas una mallor de 8 caracteres');
+		 	   return false;
+		 	}else{
+		 	  changeONPage(page);
+		 	}
+		 	}
+		    }
+
+		}
+
+		function isValidEmailAddress(emailAddress) {
+		    var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+		    return pattern.test(emailAddress);
+		}
+	</script>
+
+	<script type="text/javascript">
+		function validateRole(){
+			 var validate = document.querySelector('ons-switch#switch-type').checked;
+			 if(validate == true){
+			 		$('#toabogado').show();
+			 		$('#tocliente').hide();
+			 }else{
+			 		$('#toabogado').hide();
+			 		$('#tocliente').show();
+			 }
+		}
+	</script>
+
+
+
+	<template id="register2.html">
+		<ons-page>
+			<ons-toolbar>
+				<div class="left">
+				   <ons-back-button></ons-back-button>
+				 </div>
+				<div class="center">{{link1}}</div>
+		  </ons-toolbar>
+		  <ons-card style="margin-top: 10px;">
+		  	<ons-list>
+			   <ons-list-header>Nivel de especialización</ons-list-header>
+			   <ons-list-item>
+				  	<ons-select id="choose-sel" onchange="changeSelect(event)">
+					    <option value="1">Universitario</option>
+					    <option value="2">Universitario con diplomados</option>
+					    <option value="3">Maestria</option>
+					    <option value="4">Doctorado</option>
+					  </ons-select>
+					  <ons-input id="registerescolaridad" style="display:none;" value="1"></ons-input>
+			   </ons-list-item>
+		   	 </ons-list>
+		   	 <ons-list>
+			    <ons-list-header>Lista de especialidades</ons-list-header>
+			    {{#each categorias}}
+			    <ons-list-item>
+			      <div class="center">
+			        {{title}}
+			      </div>
+			      <div class="right">
+			        <ons-switch id="switch-{{@index}}" modifier="modifier2" onchange="checkedSwitches();" class="supSwitch"  data-atribute="{{title}}"></ons-switch>
+			      </div>
+			    </ons-list-item>
+			    {{/each}}
+			    <ons-input id="array_especialidades" style="display:none;"></ons-input>
+			  </ons-list>
+			  <ons-list>
+			   <ons-list-header>Datos Profesionales</ons-list-header>
+			   <p style="font-size:10px; text-align:justify;"><i>Como equipo necesitamos estos datos para validar que realmente se trata de un profecionista.</i></p>
+			   <ons-list-item>
+				  	<ons-input id="registeralmamater" style="width: 100%"  modifier="material transparent " placeholder="Alma Mater" float ></ons-input>
+			   </ons-list-item>
+			   <ons-list-item>
+				  	<ons-input id="registercedula" style="width: 100%"  modifier="material transparent " placeholder="Cédula Profesional" float ></ons-input>
+			   </ons-list-item>
+			   <ons-list-item>
+				  	<ons-input id="registertiempoejercicio" style="width: 100%"  modifier="material transparent " placeholder="Años que ha ejercido (número)" float ></ons-input>
+			   </ons-list-item>
+			   <ons-list-item>
+				  	<ons-input id="registerine" style="width: 100%"  modifier="material transparent " placeholder="Identificación Oficial (Id, INE)" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registerentidad" style="width: 100%"  modifier="material transparent " placeholder="Estado del país" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registerciudad" style="width: 100%"  modifier="material transparent " placeholder="Ciudad o Localidad" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registermunicipio" style="width: 100%"  modifier="material transparent " placeholder="Delegación o Municipio" float ></ons-input>
+			   </ons-list-item>
+
+			    <ons-list-item>
+				  	<ons-input id="registerdireccion" style="width: 100%"  modifier="material transparent " placeholder="Escribe tu dirección profesional" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registercelular" style="width: 100%"  modifier="material transparent " placeholder="Celular" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registertelefono" style="width: 100%"  modifier="material transparent " placeholder="Teléfono de oficina" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registerext" style="width: 100%"  modifier="material transparent " placeholder="Extensión" float ></ons-input>
+			   </ons-list-item>
+
+
+			   <ons-list-item>
+				  	<p style="font-size:10px; text-align:justify;">Al usted registrarse esta aceptando automáticamente nuestros <a style="color:#199bdb !important;" onclick="changeONPage('terminos.html')"> términos y condiciones </a> del citio así como nustra política de <a style="color:#199bdb !important;" onclick="changeONPage('privacidad.html')">privacidad</a> </p>
+			   </ons-list-item>
+		   	 </ons-list>
+		    <ons-button onclick="registerAbogado()" modifier="large">{{Button4}}</ons-button>
+		   </ons-card >
+		</ons-page>
+	</template>
+
+	<script type="text/javascript">
+	   function changeSelect(event) {
+	   	  console.log(event.target.value);
+	   	  $('#registerescolaridad').val(event.target.value);
+			}
+			   
+		function checkedSwitches(){
+			var array_propieties = [];
+			$('ons-switch.supSwitch').each(function(index){
+				 var id = $(this).attr('id');
+				 var checkedAlpha = document.querySelector('ons-switch#'+id).checked;
+				 if(checkedAlpha == true){
+				 	 array_propieties.push($(this).attr('data-atribute'));
+				 }
+			});
+			console.log(array_propieties);
+			$('#array_especialidades').val(array_propieties);
+
+			var especialidades = document.getElementById('array_especialidades').value;
+			console.log(especialidades);
+		}
+		function registerAbogado(){
+			var nombre, apellidos, email, password, almamater, cedula, anos_litigando, cardid, entidad, localidad, municipio, direccion, celular, telefono,  ext, especialidades;
+
+			nombre =  document.getElementById('registernombre').value; 
+			apellidos =  document.getElementById('registerapellido').value; 
+			email =  document.getElementById('registerusername').value; 
+			password =  document.getElementById('registerpassword').value; 
+			almamater =  document.getElementById('registeralmamater').value; 
+			cedula =  document.getElementById('registercedula').value; 
+			anos_litigando =  document.getElementById('registertiempoejercicio').value; 
+			cardid =  document.getElementById('registerine').value; 
+			entidad =  document.getElementById('registerentidad').value; 
+			localidad =  document.getElementById('registerciudad').value; 
+			municipio =  document.getElementById('registermunicipio').value; 
+			direccion =  document.getElementById('registerdireccion').value; 
+			celular =  document.getElementById('registercelular').value; 
+			telefono = document.getElementById('registertelefono').value; 
+		    ext = document.getElementById('registerext').value; 
+		    escolaridad  = document.getElementById('registerescolaridad').value; 
+			
+			especialidades = document.getElementById('array_especialidades').value; 
+			especialidades = especialidades.split(",");
+
+			params_to_send = {
+				nombre: nombre,
+				apellidos: apellidos,
+				email: email,
+				password: password,
+				almamater: almamater,
+				cedula: cedula,
+				anos_litigando: anos_litigando,
+				cardid: cardid,
+				localidad: localidad,
+				municipio: municipio,
+				direccion: direccion,
+				celular: celular,
+				telefono: telefono,
+				ext: ext,
+				escolaridad: escolaridad,
+				especialidades: especialidades
+			}
+
+			console.log(params_to_send);
+
+			var url = "{{{productionServer}}}/api/law/register";
+
+			$.ajax({
+		    url: url,
+		    cache: true,
+		    data: params_to_send,
+		    method: 'POST',
+		    success: function(data) {
+		      window.location.reload();
+		    },
+		    error: function(err) {
+		      callback(null, err);
+		    }
+		    });
+		}
+	</script>
+
+	<template id="register3.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link1}}</div>
+		  </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		      <p style="text-align:justify;">Los datos solicitados son validatorios y para uso interno del servicio en caso de cualquier duda puedes acceder a nuestras  <a style="color:#199bdb !important;" onclick="changeONPage('privacidad.html')"> políticas de privacidad</a> y <a style="color:#199bdb !important;" onclick="changeONPage('terminos.html')"> términos y condiciones </a> de la App.</p>
+			    
+			   <ons-list-item>
+				  	<ons-input id="registercelularcliente" style="width: 100%"  modifier="material transparent " placeholder="Celular" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registertelefonocliente" style="width: 100%"  modifier="material transparent " placeholder="Teléfono de oficina" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registerextcliente" style="width: 100%"  modifier="material transparent " placeholder="Extensión" float ></ons-input>
+			   </ons-list-item>
+
+			   <ons-list-item>
+				  	<ons-input id="registerdireccioncliente" style="width: 100%"  modifier="material transparent " placeholder="Escribe tu dirección profesional" float ></ons-input>
+			   </ons-list-item>
+
+			 
+		    <ons-button onclick="ValidateRegisterSecondPart()" modifier="large">{{Button4}}</ons-button>
+		   </ons-card >
+		</ons-page>
+	</template>
+
+	<script type="text/javascript">
+		function ValidateRegisterSecondPart(){
+		 	var celular   = $('#registercelularcliente').val();
+		 	var telefono = $('#registertelefonocliente').val();
+		 	if(celular == ''){ 
+		 		ons.notification.alert('Necesitamos que ingreses un número de celuar');
+		    }else if (telefono == '') {  
+		   	 	ons.notification.alert('Necesitamos que ingreses un número fijo en caso de no tener ingresa nuevamente tu celular');
+		    }else{
+		      ons.notification.alert('¡Listo, registro en progreso!');
+		      registerCliente();
+		    }
+
+		}
+
+
+
+	    function registerCliente(){
+	    	nombre =  document.getElementById('registernombre').value; 
+			apellidos =  document.getElementById('registerapellido').value; 
+			email =  document.getElementById('registerusername').value; 
+			password =  document.getElementById('registerpassword').value; 
+			direccion =  document.getElementById('registerdireccioncliente').value; 
+			celular =  document.getElementById('registercelularcliente').value; 
+			telefono = document.getElementById('registertelefonocliente').value; 
+		    ext = document.getElementById('registerextcliente').value; 
+
+		    params_to_send = {
+				nombre: nombre,
+				apellidos: apellidos,
+				email: email,
+				password: password,
+				direccion: direccion,
+				celular: celular,
+				telefono: telefono,
+				ext: ext
+			}
+
+			console.log(params_to_send);
+
+			var url = "{{{productionServer}}}/api/client/register";
+
+			//var url = "{{{developmentServer}}}/api/client/register"
+
+			$.ajax({
+		    url: url,
+		    cache: true,
+		    data: params_to_send,
+		    method: 'POST',
+		    success: function(data) {
+		      console.log(data);
+		        sessionNINg = window.localStorage.setItem("loggedIn", true);
+		      	sessionNINg = window.localStorage.getItem("loggedIn");
+		      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+		      	userSession = window.localStorage.getItem("userSession");
+		      	userSession = JSON.parse(userSession);
+		      	window.location.reload();
+		    },
+		    error: function(err) {
+		      callback(null, err);
+		    }
+		  });
+	    }
+	</script>
+
+	<template id="reset.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link2}}</div>
+		   </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		    <p>
+		      <ons-input id="resetemail" style="width: 100%" modifier="underbar" placeholder="{{Placeuser}}" float></ons-input>
+		    </p>
+		    <ons-button onclick="resetpass();" modifier="large">{{Button2}}</ons-button>
+		   </ons-card >
+		</ons-page>
+	</template>
+
+
+	<template id="terminos.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link1}}</div>
+		  </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		     <h1>Terminos y condiciones de la aplicación</h1>
+			    
+			 
+		   </ons-card >
+		</ons-page>
+	</template>
+
+	<template id="privacidad.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link1}}</div>
+		  </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		     <h1>Políticas de privacidad</h1>
+		     <center>
+		     <img src="img/privacidad1.jpg" width="90%">
+		     <img src="img/privacidad2.jpg" width="90%">
+		     <img src="img/privacidad3.jpg" width="90%">
+		     </center>
+			 
+		   </ons-card >
+		</ons-page>
+	</template>
+
+	<template id="problems.html">
+		<ons-page>
+			<ons-toolbar>
+			<div class="left">
+			   <ons-back-button></ons-back-button>
+			 </div>
+			<div class="center">{{link3}}</div>
+		  </ons-toolbar>
+		   <ons-card style="margin-top: 10px;">
+		     <i>Llena el formulario para que podamos revisar tu problema</i>
+		     <p>
+			 	 <ons-input id="emailbad" style="width: 100%" modifier="underbar" placeholder="{{Placeuser}}" float></ons-input>
+			 	 </p>
+			 	 <p>
+			 	 <ons-input id="descriptionbad" style="width: 100%" modifier="underbar" placeholder="{{Problem}}" float></ons-input>
+			 	</p>
+			 	<ons-button onclick="problemsend()" modifier="large">{{Button6}}</ons-button>
+		   </ons-card >
+		</ons-page>
+	</template>
+</ons-page>
+<script type="text/javascript">
+function login(){
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  var deviceData = window.localStorage.getItem("devicePropieties");
+  deviceData = JSON.parse(deviceData);
+  var url = "{{{productionServer}}}/api/global/loggin";
+
+  //var url = "{{{developmentServer}}}/api/global/loggin";
+	  $.ajax({
+	    url: url,
+	    cache: true,
+	    data: { email: username, password: password, device_data: deviceData},
+	    success: function(data) {
+	      console.log(data);
+	      if(data.ingreso == true){
+	      	sessionNINg = window.localStorage.setItem("loggedIn", true);
+	      	sessionNINg = window.localStorage.getItem("loggedIn");
+	      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+	      	userSession = window.localStorage.getItem("userSession");
+	      	userSession = JSON.parse(userSession);
+	      	window.location.reload();
+	      }else{
+	      	ons.notification.alert(data.notice);
+	      }
+	    },
+	    error: function(err) {
+	      callback(null, err);
+	    }
+	  });
+}
+
+
+function changeONPage(pushpage){
+	document.querySelector('#logginNavigator').pushPage(pushpage);
+
+
+}
+
+function resetpass(){
+
+	var email = document.getElementById('resetemail').value;
+	var url = "{{{productionServer}}}/api/global/change_password";
+
+	$.ajax({
+	    url: url,
+	    cache: true,
+	    data: { email: email},
+	    success: function(data) {
+	      	ons.notification.alert(data.notice);
+	      	changeONPage('loggin.html');
+	    },
+	    error: function(err) {
+	      callback(null, err);
+	    }
+	});
+
+}
+
+
+function problemsend(){
+
+	var email = document.getElementById('emailbad').value;
+	var description = document.getElementById('descriptionbad').value;
+	var url = "{{{productionServer}}}/api/global/new_tiket";
+
+	$.ajax({
+	    url: url,
+	    cache: true,
+	    data: { email: email, description: description},
+	    success: function(data) {
+	      	ons.notification.alert(data.notice);
+	      	changeONPage('loggin.html');
+	    },
+	    error: function(err) {
+	      callback(null, err);
+	    }
+	});
+
+}
+
+</script>

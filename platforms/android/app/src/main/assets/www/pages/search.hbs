@@ -1,0 +1,73 @@
+<ons-navigator swipeable id="searchNavigator" animation="fade" page="search.html" animation-options="{duration: 0.2, delay: 0.1, timing: 'ease-in'}" ></ons-navigator>
+<template id="search.html" side="right">
+<ons-page id="searchinit">
+</ons-page>
+</template>
+<template id="searched.html" side="right">
+<ons-page id="searchlist">
+</ons-page>
+</template>
+<template id="searcheduser.html" side="right">
+<ons-page id="searcheduser">
+</ons-page>
+</template>
+
+<script type="text/javascript">
+$(document).ready(function(){
+var idxx = "searchinit .page__content";
+var deviceSTREAM = window.localStorage.getItem("devicePlatform");
+if(deviceSTREAM == 'Android'){
+loadpageFree("search_init",idxx,"js/json/search.json");
+}else{
+loadpage("search_init",idxx,"js/json/search.json");	
+}
+});
+
+$('#ons-button-return').onclick = function() {
+  console.log('return <<< ');
+  changePage('search.html');
+};
+
+function changePage(pushpage){
+	document.querySelector('#searchNavigator').pushPage(pushpage);
+}
+
+function searchIN(pushpage){
+	document.querySelector('#searchNavigator').pushPage(pushpage);
+	var search = $('#ssearch .search-input').val();
+	var url = "{{{productionServer}}}/api/global/search";
+	var paramsx = {search: search};
+	var idx = "searchlist .page__content";
+	appenddexternalpageload("search_list", idx, url, paramsx, 'POST');
+	$('#ssearch .search-input').val('');
+}
+
+function searchINX(pushpage){
+	var search = $('#ssearchx .search-input').val();
+	var url = "{{{productionServer}}}/api/global/search";
+	var paramsx = {search: search};
+	var idx = "searchlist .page__content";
+	$('#'+idx).html('');
+	loadaexternalpageloadsearch("search_list", idx, url, paramsx, 'POST');
+	$('#ssearch .search-input').val('');
+}
+
+function serachTab(pushpage, search){
+	document.querySelector('#searchNavigator').pushPage(pushpage);
+	var url = "{{{productionServer}}}/api/global/search";
+	var paramsx = {search: search};
+	var idx = "searchlist .page__content";
+	appenddexternalpageload("search_list", idx, url, paramsx, 'POST');
+	$('#ssearch .search-input').val('');
+}
+
+function serachTag(search){
+	var url = "{{{productionServer}}}/api/global/search";
+	var paramsx = {search: search};
+	var idx = "searchlist .page__content";
+	$('#'+idx).html('');
+	loadaexternalpageloadsearch("search_list", idx, url, paramsx, 'POST');
+	$('#ssearch .search-input').val('');
+}
+
+</script>

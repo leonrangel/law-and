@@ -1,0 +1,595 @@
+
+<script type="text/javascript">
+  document.querySelector('ons-tabbar#myusertabbar{{user.id}}').setTabbarVisibility(false);
+  function changeTabContact() {
+    document.getElementById("myusertabbar{{user.id}}").setActiveTab(3);
+  }
+
+  function changeTaUserx() {
+    document.getElementById("myusertabbar{{user.id}}").setActiveTab(0);
+  }
+
+  $(document).ready(function(){
+	  setTimeout(function(){
+	  	$( "#datepicker" ).datepicker();
+	  },500);
+  });
+
+    var showPopover = function(target) {
+	  document
+	    .getElementById('popover')
+	    .show(target);
+	};
+
+	var hidePopover = function() {
+	  document
+	    .getElementById('popover')
+	    .hide();
+	};
+</script>
+<ons-page>
+	<ons-tabbar id="myusertabbar{{user.id}}" visible="false" animation-options="{duration: 0.2, delay: 1, timing: 'ease-in'}">
+	    <ons-tab page="page1.html" active>CV genral</ons-tab>
+	    <ons-tab page="page2.html">Info</ons-tab>
+	    <ons-tab page="page3.html">Comentarios</ons-tab>
+	    <ons-tab page="page4.html">Agenda una asesoría sin costo</ons-tab>
+	    <ons-tab page="page5.html">Lista de citas o llamadas</ons-tab>
+	    <ons-tab page="page6.html">Editar perfil</ons-tab>
+	    <ons-tab page="page7.html">Equipos</ons-tab>
+        <ons-tab page="page8.html">Agregar a equipo</ons-tab>
+	</ons-tabbar>
+
+	<template id="page1.html">
+	  <ons-page>
+	  	{{#if return}}
+		    <ons-toolbar class="toolbar" modifier="transparent cover-content" static="true" style="background-color: rgba(0,0,0,0.3);">
+				<div class="left"><ons-back-button></ons-back-button></div>
+				<div class="center"></div>
+			    <div class="right" style="padding-right: 15px;">
+			    	{{#sessionTrue}}
+			    	{{#ifCliente}}
+			    	<div id="contactButton">
+	                <ons-button-toolbar style="font-size: 12px; margin-left:-150px; color: #fff;" onclick="changeTabContact();"> Agenda una asesoría sin costo <ons-icon icon="fa-phone" style="font-size:30px; color:#fff; " ripple> </ons-icon></ons-toolbar-button>
+	                </div>
+	                {{/ifCliente}}
+	                {{/sessionTrue}}
+	                <!--{{#sessionFalse}}
+	                <div id="contactButton">
+	                <ons-button-toolbar style="font-size: 12px; margin-left:-150px; color: #fff;" onclick="changeTab();"> Agenda una asesoría sin costo <ons-icon icon="fa-phone" style="font-size:30px; color:#fff;" ripple> </ons-icon></ons-toolbar-button>
+	                </div>
+	                {{/sessionFalse}}-->
+	                {{#sessionFalse}}
+	                <div id="contactButton">
+	                <ons-button-toolbar style="font-size: 12px; margin-left:-150px; color: #fff;" onclick="changeTabContact();"> Agenda una asesoría sin costo <ons-icon icon="fa-phone" style="font-size:30px; color:#fff;" ripple> </ons-icon></ons-toolbar-button>
+	                </div>
+	                {{/sessionFalse}}
+	            </div>
+	    </ons-toolbar>
+	    {{/if}}
+	  	<ons-speed-dial position="bottom right" direction="up">
+		    <ons-fab>
+		      <ons-icon icon="md-share"></ons-icon>
+		    </ons-fab>
+		    <ons-speed-dial-item>
+		      <ons-icon icon="md-twitter" onclick="window.plugins.socialsharing.shareViaTwitter('Mensaje via Twitter','www/logo.png', 'http://lawconnect.io')"></ons-icon>
+		    </ons-speed-dial-item>
+		    <ons-speed-dial-item>
+		    	<a onclick="window.plugins.socialsharing.shareViaFacebook('Mensaje via Facebook','www/logo.png', 'http://lawconnect.io', function() {console.log('share ok')}, function(errormsg){console.log(errormsg)})"><ons-icon icon="md-facebook"></ons-icon></a>
+		    </ons-speed-dial-item>
+		 </ons-speed-dial>
+	  	<img src="{{user.avatar}}" width="100%;" style="margin-top:-55px;" id="{{#ifCurrentUser user.email}}currentuseravatar{{/ifCurrentUser}}" class="avatar-profile">
+
+	    <div class="profile-header-name ">
+	    	<h1>{{user.nombre}} {{user.apellidos}}</h1>
+	    	 {{#ifCond abogado true }}
+	 	    <span class="calification-profile">{{user.evaluacion}}</span>
+	 	      {{/ifCond}}
+	    </div>
+	  	{{#ifCurrentUser user.email}}
+	  	     {{#ifCliente}}
+	  	      <div class="profile-menu" style="margin-top: 20px;">
+	 	      <ons-button modifier="quiet" onclick="changeCitas();">Citas</ons-button>
+	 	      <ons-button modifier="quiet" onclick="editarPerfil();">Editar</ons-button>
+	 	      <ons-button modifier="quiet" onclick="exit();">Salir</ons-button>
+	 	      <ons-button modifier="quiet" onclick="showPopover(this);" style="font-size: 40px; margin-top: -5px; margin-left: 150px;" ><ons-icon icon="ion-camera"></ons-icon></ons-button>
+	 	     </div>
+	 	     {{/ifCliente}}
+	    {{/ifCurrentUser}}
+
+	    	{{#ifCurrentUser user.email}}
+	    	{{#ifCond abogado true }}
+	  	     <div class="profile-menu">
+	 	     <!--<ons-button modifier="quiet" onclick="changeCitas();">Citas</ons-button>
+	 	     <ons-button modifier="quiet" onclick="editarPerfil();">Editar</ons-button>-->
+	 	      
+	 	     <ons-button modifier="quiet" onclick="teams();">Equipo</ons-button>
+	 	      
+	 	      <ons-button modifier="quiet" onclick="exit();">Salir</ons-button>
+	 	     <!-- <ons-button modifier="quiet" onclick="showPopover(this);" style="font-size: 40px; margin-top: -5px; margin-left: 80px;" ><ons-icon icon="ion-camera"></ons-icon></ons-button>-->
+	 	     </div>
+	 	     {{/ifCond}}
+	    {{/ifCurrentUser}}
+
+	    {{#ifCond abogado true}}
+		 <ons-list style="{{#notCurrentUser user.email}}margin-top: 50px;{{/notCurrentUser}}">
+		 {{#ifCliente}}
+			    	<div style="margin-top:-70px;">
+	                </div>
+	                {{/ifCliente}}
+	      
+		  	<p class="special" style="color: #000;"><b>Especialidades</b></p>
+			<ons-list-item class="specials" style="margin-top:-20px; ">
+		  	{{#each user.especialidades}}
+		  	   <span class="uk-label" >
+		  	   	 {{nombre}}
+		  	   </span>
+		  	{{/each}}
+
+		  </ons-list-item>
+		  <ons-list-item style="padding: 0px 15px;" class="specials">
+		  	<p class="graph-me" style="color: #000;">Efectividad</p>
+          	<div style="width: 100%;">
+          	<div class="w3-section w3-dark-grey" style="width:100%; ">
+			  <div class="w3-green w3-green w3-center" style="padding: 7px 0px; width:{{user.evaluacion_por_litigio}}%">{{user.evaluacion_por_litigio}}%</div>
+		    </div>
+		    </div>
+		  </ons-list-item>
+		  <ons-list-item><!-- <b style="width: 100%; display: block;color: #000;" >Curriculum:</b>  -->
+
+		  	<p style="padding: 0px 5px; text-align: justify; width: 100%;"><b style="color: #000;">Alma mater:</b> 
+		  	{{user.almamater}}</p>
+
+		  	<p style="padding: 0px 5px; text-align: justify; width: 100%;"><b style="color: #000;">Grado Académico:</b>
+		  	{{user.escolaridad}}</p>
+
+		  	<p style="padding: 0px 5px; text-align: justify; width: 100%;"><b style="color: #000;">Cédula:</b>
+		  	{{user.cedula}}</p>
+
+		  	<p style="padding: 0px 5px; text-align: justify; width: 100%;"><b style="color: #000;">Despacho actual:</b>
+		  	RAND y Asociados</p>
+
+		  <p style="padding: 0px 10px; text-align: justify;">{{{user.curriculum}}}</p></ons-list-item>
+		   <ons-list-item><b style="color: #000;">Acerca de mí:</b> <br/><p style="padding: 0px 10px; text-align: justify;"> {{{user.acerca_de_mi}}}</p></ons-list-item>
+
+		</ons-list>
+		{{else}}
+		<div style="margin-top:70px;">
+		<ons-list>
+	     <ons-list-item><b style="color: #000; margin-right: 10px;">Cliente:</b>  {{user.nombre}} {{user.apellidos}}</ons-list-item>
+	     <ons-list-item><b style="color: #000;margin-right: 10px;">Correo:</b>  {{user.email}}</ons-list-item>
+	     <ons-list-item><b style="color: #000;margin-right: 10px;">Celular:</b>  {{user.celular}}</ons-list-item>
+		</ons-list>
+	    </div>
+		{{/ifCond}}
+	  </ons-page >
+	</template>
+	<template id="page2.html">
+	  <ons-page>
+		<ons-list>
+		  <ons-list-item>{{user.nombre}} {{user.apellidos}}</ons-list-item>
+		</ons-list>
+	  </ons-page >
+	</template>
+	<template id="page3.html">
+	  <ons-page>
+		<ons-list>
+		  <ons-list-item>{{user.nombre}} {{user.apellidos}}</ons-list-item>
+		  <ons-list-item>{{user.email}}</ons-list-item>
+		</ons-list>
+	  </ons-page >
+	</template>
+	<template id="page4.html">
+	  <ons-page>
+		 <ons-toolbar class="toolbar" modifier="transparent cover-content" static="true" style="background-color: transparent;">
+			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="center"></div>
+	     </ons-toolbar>
+	     <ons-page>
+	     	<br/>
+	     	<center>
+	     		<p style="text-align:center; padding: 20px;"><b>Agenda una llamada de asesoría sin costo</b> </p>
+	     		<input type="text" id="datepicker" name="date" class="text-input text-input--material" placeholder="Selecciona una fecha" style="width:90%;"><br/><br/><br/>
+	     		<input type="time" id="appt-time" name="appt-time" min="9:00" max="18:00" class="text-input text-input--material"  style="width:90%;" required/><span >Horaraio para recibir llamadas: 9AM a 6PM</span><br/><br/><br/>
+
+	     		<textarea id="textInContact" name="asunto" class="textarea" style="width:90%;" placeholder="Cuéntanos un poco sobre tu problema"></textarea><br/><br/>
+	     		
+				{{#sessionFalse}}
+
+				<p style="text-align:left; padding: 20px;"><b>Necesitamos estos datos para confirmar tu solicitud:</b> </p>
+
+				    <input type="text" name="nombre"  id="nombrecontact" placeholder="Nombre" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+				    <input type="text" name="apellidos"  id="apellidoscontact" placeholder="Apellidos" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+					<input type="text" name="user"  id="emailcontact" placeholder="Email" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+					<input type="text" name="celular"  id="celcontact" placeholder="Celular" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+					<input type="text" name="telefono"  id="telefonocontact" placeholder="Teléfono" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+				    <input type="text" name="ext"  id="extcontact" placeholder="Extensión" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+				   	<input type="text" name="direccion"  id="direccioncontact" placeholder="Dirección" class="text-input text-input--material"  style="width:90%;" ><br/><br/><br/>
+				   	<input type="text" name="usercontact" value="{{user.email}}" id="usercontact" style="display:none;">
+
+				   	<ons-button class="button--cta" onclick="contactformnotlogin();" modifier="large">Enviar Solicitud</ons-button>
+				{{/sessionFalse}}
+				{{#sessionTrue}}
+				<div style="display:none;"><label class="checkbox">
+				  <input type="checkbox" class="checkbox__input" name="programar_llamada" id="checpick">
+				  <div class="checkbox__checkmark"></div>
+				   ¿Es una llamada o video llamada ?
+				</label><br/><br/></div>
+				<input type="text" name="user" value="{{user.email}}" id="usercontact" style="display:none;">
+	     		<ons-button class="button--cta" onclick="contactform();" modifier="large">Enviar Solicitud</ons-button>
+	     		{{/sessionTrue}}
+	        </center>
+	     </ons-page>
+	  </ons-page>
+	</template>
+	<template id="page5.html">
+	  <ons-page id="page5user">
+	  	<ons-toolbar class="toolbar" static="true" style="background-color: transparent;">
+			<div class="left"><ons-back-button onclick="changeTaUserx();"></ons-back-button></div>
+			<div class="center">Mis citas</div>
+	    </ons-toolbar>
+	  </ons-page >
+	</template>
+
+	<template id="page6.html">
+	  <ons-page id="page6user">
+	  	<ons-toolbar class="toolbar" static="true">
+			<div class="left"><ons-back-button onclick="changeTaUserx();"></ons-back-button></div>
+			<div class="center">Editar Perfil</div>
+	    </ons-toolbar>
+	    <center><br/><br/><br/><br/>
+	    <input type="text" id="nombreedit" name="nombreedit" class="text-input text-input--material" placeholder="Nombre" style="width:90%;" value="{{user.nombre}}"><br/><br/>
+
+	    <input type="text" id="apellidoedit" name="apellidoedit" class="text-input text-input--material" placeholder="Apellido" style="width:90%;" value="{{user.apellidos}}"><br/><br/>
+
+	    <input type="text" id="emailedit" name="emailedit" class="text-input text-input--material" placeholder="Email" style="width:90%;"  value="{{user.email}}"><br/><br/>
+
+	    <input type="text" id="celularedit" name="celularedit" class="text-input text-input--material" placeholder="Celular" style="width:90%;" value="{{user.celular}}"><br/><br/>
+
+	    <input type="text" id="telefonoedit" name="telefonoedit" class="text-input text-input--material" placeholder="Teléfono" style="width:90%;" value="{{user.telefono}}"><br/><br/>
+
+	    <input type="text" id="extedit" name="extedit" class="text-input text-input--material" placeholder="Extensión" style="width:90%;" value="{{user.ext}}"><br/><br/>
+  
+<!--         <input type="text" id="abogadoedit" name="abogadoedit" class="text-input text-input--material" placeholder="Abogado" style="width:90%;" value="{{abogado}}"><br/><br/> -->
+
+	    <ons-button class="button--cta" onclick="useredit();" modifier="large">Actualizar usuario</ons-button>
+	    </center>
+	  </ons-page >
+	</template>
+	<template id="page7.html">
+	  <ons-page id="page7user">
+	  	<ons-toolbar class="toolbar" static="true">
+			<div class="left"><ons-back-button onclick="changeTaUserx();"></ons-back-button></div>
+			<div class="center">Mi equipo</div>
+	    </ons-toolbar>
+	    <ons-fab position="bottom right" onclick="formteams()">
+		    <ons-icon icon="md-plus"></ons-icon>
+		</ons-fab>
+
+	  </ons-page >
+	</template>
+
+	<template id="page8.html">
+	  <ons-page id="page8user">
+	  	<ons-toolbar class="toolbar" static="true">
+			<div class="left"><ons-back-button onclick="teams();"></ons-back-button></div>
+			<div class="center">Agregar al equipo</div>
+	    </ons-toolbar>
+	  </ons-page >
+	</template>
+</ons-page>
+
+ <ons-popover direction="down" id="popover">
+  <div style="padding: 10px; text-align: center;">
+   <ons-list>
+    <ons-list-item><ons-button modifier="quiet" onclick="cameraAvatar();" style="font-size: 12px; margin-top: -10px;"><ons-icon icon="ion-camera"></ons-icon> Tomar foto </ons-button></ons-list-item>
+    <ons-list-item><ons-button modifier="quiet" onclick="fileAvatar();" style="font-size: 12px; margin-top: -10px;"><ons-icon icon="fa-file-o"></ons-icon> Seleccionar foto </ons-button></ons-list-item>
+  </div>
+  </ons-lit>
+</ons-popover>
+
+
+<script type="text/javascript">
+	function changePageUser(pushpage){
+		document.querySelector('#userNavigator').pushPage(pushpage);
+	}
+    
+
+    function contactform(){
+    	 var fecha = document.getElementById('datepicker').value;
+    	 var hora = document.getElementById('appt-time').value; 
+  		 var asunto = document.getElementById('textInContact').value;
+		 var programar_llamada = document.getElementById('checpick').value;
+		 var usercontact = document.getElementById('usercontact').value;
+		 var userSession = window.localStorage.getItem("userSession");
+		 userSession = JSON.parse(userSession);
+
+  		 var params_to_send = {
+  		 	fecha: fecha,
+  		 	hora: hora,
+  		 	asunto: asunto,
+  		 	programar_llamada: programar_llamada,
+  		 	usuario_contactado: usercontact,
+  		 	cliente_email: userSession.user.email
+  		 }
+         var url = "{{{productionServer}}}/api/global/contact";
+
+         $.ajax({
+		    url: url,
+		    cache: true,
+		    data: params_to_send,
+		    method: 'POST',
+		    success: function(data) {
+		      console.log(data);
+		      text = data.notice;
+		      ons.notification.alert(text);
+		      changeTaUserx();
+		    },
+		    error: function(err) {
+		      callback(null, err);
+		    }
+		 });
+
+    }
+
+    function contactformnotlogin(){
+
+    	 var fecha = document.getElementById('datepicker').value;
+    	 var hora = document.getElementById('appt-time').value; 
+  		 var asunto = document.getElementById('textInContact').value;
+  		 var usercontact = document.getElementById('usercontact').value;
+  		 var emailcontact = document.getElementById('emailcontact').value;
+  		 var nombrecontact = document.getElementById('nombrecontact').value;
+  		 var apellidoscontact = document.getElementById('apellidoscontact').value;
+  		 var celcontact = document.getElementById('celcontact').value;
+  		 var telefonocontact = document.getElementById('telefonocontact').value;
+  		 var extcontact = document.getElementById('extcontact').value;
+  		 var direccioncontact = document.getElementById('direccioncontact').value;
+
+  		 var params_to_send = {
+  		 	fecha: fecha,
+  		 	hora: hora,
+  		 	asunto: asunto,
+  		 	email: emailcontact,
+  		 	usuario_contactado: usercontact,
+  		 	nombre: nombrecontact,
+  		 	apellidos: apellidoscontact,
+  		 	celular: celcontact,
+  		 	telefono: telefonocontact,
+  		 	ext: extcontact,
+  		 	direccion: direccioncontact
+  		 }
+
+  		 var stringx = JSON.stringify(params_to_send);
+
+  		 url ="{{{productionServer}}}/api/global/single_contact_cel"
+
+
+  		 $.ajax({
+		    url: url,
+		    cache: true,
+		    data: params_to_send,
+		    method: 'POST',
+		    success: function(data) {
+	  		  console.log(data);
+		      if(data.ingreso == true){
+		      	sessionNINg = window.localStorage.setItem("loggedIn", true);
+		      	sessionNINg = window.localStorage.getItem("loggedIn");
+		      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+		      	userSession = window.localStorage.getItem("userSession");
+		      	userSession = JSON.parse(userSession);
+		      	ons.notification.alert(data.notice);
+		      	setTimeout(function(){
+		      		window.location.reload();
+		      	},5000);
+		      }else{
+		      	ons.notification.alert(data.notice);
+		      }
+	        },
+		    error: function(err) {
+		      callback(null, err);
+		    }
+		 });
+
+    }
+
+    function changeCitas(){
+	  	document.getElementById("myusertabbar{{user.id}}").setActiveTab(4);
+	  	var url = "{{{productionServer}}}/api/global/contacts";
+		var paramsx = {email: "{{user.email}}", abogado: "{{abogado}}"};
+		var idx = "page5user .page__content";
+		externalpageloadSimplifyToCitas("citas", idx, url, paramsx, 'GET');
+	}
+	 
+	function editarPerfil(){
+	  	document.getElementById("myusertabbar{{user.id}}").setActiveTab(5);
+	}
+
+	function teams(){
+	  	document.getElementById("myusertabbar{{user.id}}").setActiveTab(6);
+	  	var url = "{{{productionServer}}}/api/law/team";
+	  	var userSession = window.localStorage.getItem("userSession");
+		userSession = JSON.parse(userSession);
+		var paramsx = {user: userSession.user.email};
+		var idx = "page7user .page__content";
+		externalpageloadAbogadosConEquipos("team", idx, url, paramsx, 'GET');
+	}
+
+	function formteams(){
+	  	document.getElementById("myusertabbar{{user.id}}").setActiveTab(7);
+	  	var url = "{{{productionServer}}}/api/law/all";
+	  	var userSession = window.localStorage.getItem("userSession");
+		userSession = JSON.parse(userSession);
+		var paramsx = {user: userSession.user.email};
+		var idx = "page8user .page__content";
+		externalpageloadAbogados("add_abogado", idx, url, paramsx, 'GET');
+	}
+
+	function useredit(){
+		 var nombre = document.getElementById('nombreedit').value;
+		 var apellidos = document.getElementById('apellidoedit').value;
+		 var email = document.getElementById('emailedit').value;
+		 var celular = document.getElementById('celularedit').value;
+		 var telefono = document.getElementById('telefonoedit').value;
+		 var ext = document.getElementById('extedit').value;
+		 var abogado = document.getElementById('abogadoedit').value;
+
+
+		 var params_to_send = {
+  		 	nombre: nombre,
+  		 	apellidos: apellidos,
+  		 	email: email,
+  		 	celular: celular,
+  		 	telefono: telefono,
+  		 	ext: ext,
+  		 	abogado: abogado
+  		 }
+         var url = "{{{productionServer}}}/api/global/edit";
+
+         $.ajax({
+		    url: url,
+		    cache: true,
+		    data: params_to_send,
+		    method: 'POST',
+		    success: function(data) {
+		        console.log(data);
+		      	sessionNINg = window.localStorage.setItem("loggedIn", true);
+		      	sessionNINg = window.localStorage.getItem("loggedIn");
+		      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+		      	userSession = window.localStorage.getItem("userSession");
+		      	userSession = JSON.parse(userSession);
+		        ons.notification.alert(data.notice);
+		      	console.log(userSession);
+		      	console.log(sessionNINg);
+		      	window.location.reload();
+		    },
+		    error: function(err) {
+		      callback(null, err);
+		    }
+		 });;
+
+	}
+
+	function cameraAvatar(){
+		navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+		    destinationType: Camera.DestinationType.FILE_URI });
+
+		function onSuccess(imageURI) {
+			
+
+		    var url = "{{{productionServer}}}/api/global/update_avatar";
+		    //var url = "{{{developmentServer}}}/api/global/update_avatar";
+		    var options = new FileUploadOptions();
+            options.fileKey="avatar";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+            var params = {};
+            params.email = "{{user.email}}";
+            options.params = params;
+
+            function win(r) {
+			    console.log("Code = " + r.responseCode);
+			    console.log("Response = " + r.response);
+			    console.log("Sent = " + r.bytesSent);
+			    data = r.response;
+			    data = JSON.parse(data);
+			    console.log(data);
+			    ons.notification.alert(data.notice);
+			    avatar = data.user.user.avatar;
+			    console.log(avatar);
+			    var id = "currentuseravatar";
+		        var image = document.getElementById(id);
+		        image.src = avatar;
+		        $('#'+id).attr('src',avatar);
+		        sessionNINg = window.localStorage.setItem("loggedIn", true);
+		      	sessionNINg = window.localStorage.getItem("loggedIn");
+		      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+		      	userSession = window.localStorage.getItem("userSession");
+		      	userSession = JSON.parse(userSession);
+
+			}
+
+			function fail(error) {
+			    alert("An error has occurred: Code = " + error.code);
+			    console.log("upload error source " + error.source);
+			    console.log("upload error target " + error.target);
+			}
+
+			var ft = new FileTransfer();
+            ft.upload(imageURI, encodeURI(url), win, fail, options);
+
+		    
+		}
+
+		function onFail(message) {
+		    alert('Failed because: ' + message);
+		}
+	}
+
+
+	function fileAvatar(){
+
+		var pictureSource=navigator.camera.PictureSourceType;
+        var destinationType=navigator.camera.DestinationType;
+        var source = pictureSource.PHOTOLIBRARY;
+		navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source });
+
+		function onSuccess(imageURI) {
+			
+
+		    var url = "{{{productionServer}}}/api/global/update_avatar";
+		    //var url = "{{{developmentServer}}}/api/global/update_avatar";
+		    var options = new FileUploadOptions();
+            options.fileKey="avatar";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+
+            var params = {};
+            params.email = "{{user.email}}";
+            options.params = params;
+
+            function win(r) {
+			    console.log("Code = " + r.responseCode);
+			    console.log("Response = " + r.response);
+			    console.log("Sent = " + r.bytesSent);
+			    data = r.response;
+			    data = JSON.parse(data);
+			    console.log(data);
+			    ons.notification.alert(data.notice);
+			    avatar = data.user.user.avatar;
+			    console.log(avatar);
+			    var id = "currentuseravatar";
+		        var image = document.getElementById(id);
+		        image.src = avatar;
+		        sessionNINg = window.localStorage.setItem("loggedIn", true);
+		      	sessionNINg = window.localStorage.getItem("loggedIn");
+		      	userSession = window.localStorage.setItem("userSession", JSON.stringify(data.user));
+		      	userSession = window.localStorage.getItem("userSession");
+		      	userSession = JSON.parse(userSession);
+
+			}
+
+			function fail(error) {
+			    alert("An error has occurred: Code = " + error.code);
+			    console.log("upload error source " + error.source);
+			    console.log("upload error target " + error.target);
+			}
+
+			var ft = new FileTransfer();
+            ft.upload(imageURI, encodeURI(url), win, fail, options);
+
+		    
+		}
+
+		function onFail(message) {
+		    alert('Failed because: ' + message);
+		}
+	}
+
+	$('.popover-mask').click(function(){
+		hidePopover();
+	});
+</script>
+
+

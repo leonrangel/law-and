@@ -1,0 +1,31 @@
+{{#each data as |caso casoID|}}
+	<ons-card modifier="material modifier2" style="overflow:auto; min-height:100px; max-height: 850px;" id="{{caso.numero_expediente}}-caso">
+		<div class="title">
+	      {{caso.titulo}}
+	    </div >
+		<div class="content">
+			<i>{{caso.numero_expediente}}</i><br/><br/>
+			<div style="width: 100%;">
+	          <button class="button--quiet" onclick="viewCaso('{{caso.numero_expediente}}')" id="link-caso-view-{{caso.numero_expediente}}"> Ver </button>
+	          {{#ifAbogado}}
+	          <button class="button--quiet" onclick="edit_caso('{{caso.numero_expediente}}', '{{caso.titulo}}', '{{{oneLineString caso.resumen_del_caso}}}')"> Editar </button>
+	          <button class="button--quiet" onclick="destroyCaso('{{caso.numero_expediente}}')"> Eliminar </button>
+	          {{/ifAbogado}}
+		    </div>
+	    </div>
+	</ons-card>
+{{/each}}
+
+<script type="text/javascript">
+ function edit_caso(token, titulo, resumen_del_caso){
+ 	data = {
+ 		token: token,
+ 		titulo: titulo,
+ 		resumen_del_caso: resumen_del_caso
+ 	}
+
+ 	loadView({"data": data}, "edit_caso", "editarcaso .page__content");
+ 	changePageCasos('editarcaso.html');
+
+ }
+</script>

@@ -1,0 +1,90 @@
+<ons-list modifier="inset" class="list-search">
+<ons-list-header class="search-header-list" style="text-align: center;"> 
+	<div class="left-serch-list"><ons-back-button class="back-button__icon-list"></ons-back-button></div>
+	<ons-search-input id="ssearchx"
+    placeholder="¿Para qué necesitas abogado?"
+    onchange="searchINX('searched.html')"
+    style="width: 85%; float: right; padding-right: 10px;"
+    ></ons-search-input>
+    <div class="tags-search-list" id="tagssearch"></div>
+</ons-list-header>
+	{{#each data as |user userId| }}
+		<ons-list-item modifier="chevron" class="list-search-item" id="{{userId}}tabprofile" data-especialidades="" tappable >
+			<div class="left">
+				{{#if user.avatar}}
+				<img class="list-item__thumbnail" src="{{user.square}}">
+				{{else}}
+				<img class="list-item__thumbnail" src="img/avatar.png">
+				{{/if}}
+			</div>
+				<!-- <div class="firm" style="width: 25px; height: 25px; background-color: #fff; position: absolute; margin-left: 70px; margin-top: 40px; padding: 5px;     -webkit-box-shadow: 0px 0px 3px -1px rgb(6, 6, 6);
+    -moz-box-shadow: 0px 0px 3px -1px rgb(6, 6, 6);
+    box-shadow: 0px 0px 3px -1px rgb(6, 6, 6);"> 
+					<img src="img/rand.png" style="width: 100%;">
+			</div> 
+ -->			
+ 			<div class="center" style="background-image: none;">
+				<span class="calification">{{user.evaluacion}}</span>
+				<span class="list-item__title">{{user.nombre}} {{user.apellidos}}</span>
+				<span class="list-item__subtitle description-list" id="lok{{userId}}" data-mi="{{user.acerca_de_mi}}" data-cur="{{user.curriculum}}">
+				  {{{trimString user.acerca_de_mi}}}
+			   </span>
+			</div>
+			
+			<script type="text/javascript">
+			var public_especialidad = [];
+			</script>
+			{{#each user.especialidades as |especialidad especialidadId|}}
+			  <script type="text/javascript">
+			  	public_especialidad.push({
+			  		id: "{{especialidad.id}}",
+			  		nombre: "{{especialidad.nombre}}"
+			  	});
+			  </script>
+			{{/each}}
+		</ons-list-item>
+		<script type="text/javascript">
+		   $(document).ready(function(){
+		   console.log('************>'+public_especialidad);
+		   var especialidad = JSON.stringify(public_especialidad);
+		   $("#{{userId}}tabprofile").data('especialidades', especialidad);
+		   $("#{{userId}}tabprofile").click(function(){
+		   	    setTimeout(function(){
+		   	    var curriculum = $("#lok{{userId}}").data('cur');
+		   	    var acerca_de_mi = $("#lok{{userId}}").data('mi');
+		   	    var especialidad = $("#{{userId}}tabprofile").data('especialidades');
+			    var share = {
+		    		nombre: "{{user.nombre}}",
+		    		evaluacion_por_litigio: "{{user.evaluacion_por_litigio}}",
+		    		apellidos: "{{user.apellidos}}",
+		    		acerca_de_mi: acerca_de_mi,
+		    		curriculum: curriculum,
+		    		email: "{{user.email}}",
+		    		telefono: "{{user.telefono}}",
+		    		ext: "{{user.ext}}",
+		    		celular:"{{user.celular}}",
+		    		evaluacion: "{{user.evaluacion}}",
+		    		destacar: "{{user.destacar}}",
+		    		direccion: "{{user.direccion}}",
+		    		avatar: "{{user.avatar}}",
+		            especialidades: JSON.parse(especialidad),
+		            almamater: "{{user.almamater}}",
+		            cedula: "{{user.cedula}}",
+		            escolaridad: "{{user.escolaridad}}",
+		            view_token: "{{user.view_token}}"
+	    	    }
+	    	    console.log('------------>'+especialidad);
+			var json = {user: share, abogado: true, return: true};
+	        var tpl = "user";
+	        var idx = "searcheduser .page__content";
+	        loadView(json,tpl,idx);
+	        changePage("searcheduser.html");
+	        }, 500);
+
+            });
+		   });
+		</script>
+	{{/each}}
+</ons-list>
+
+

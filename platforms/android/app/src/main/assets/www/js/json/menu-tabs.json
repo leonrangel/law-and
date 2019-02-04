@@ -1,0 +1,8 @@
+{
+	"compose": [
+		{"id": 1, "Title": "Buscar", "Icon":"ion-search, material:md-search", "Content": "lorem ipsum", "Render": "search", "topbar": false },
+		{"id": 2, "Title": "Mis Casos", "Icon":"list", "Content": "lorem ipsum", "Render": "casos", "topbar": false  },
+		{"id": 3, "Title": "Alertas","Icon":"ion-ios-bell", "Content": "lorem impsum", "Render": "alertas", "topbar": true},
+		{"id": 4, "Title": "Perfil","Icon":"ion-person", "Content": "lorem impsum", "Render": "profile", "topbar": false }
+	]
+}
