@@ -1,0 +1,68 @@
+<ons-list>
+{{#each data as |data dataID|}}
+{{#ifCurrentUser data.owner}}
+<ons-list-header>{{data.equipo}} <i>Owner</i></ons-list-header>
+{{/ifCurrentUser}}
+
+{{#ifnotOwner data.owner}}
+<ons-list-header>{{data.equipo}} <i>Adjunto</i></ons-list-header>
+{{/ifnotOwner}}
+{{#ifCurrentUser data.owner}}
+{{#eachWhitJSONparse data.abogados}}
+    <ons-list-item id="{{@index}}abogado" expandable>
+      <div class="left">
+        <img class="list-item__thumbnail" src="{{square}}">
+      </div>
+      <div class="center">
+        <span class="list-item__title">{{nombre}} {{apellidos}}</span><span class="list-item__subtitle">{{email}}</span>
+      </div>
+      
+
+      <div class="expandable-content">
+      	<ons-list-item onclick="remove_by_team('{{@index}}abogado', '{{email}}');"> 
+      		Eliminar del equipo
+      	</ons-list-item>
+      </div>
+
+    </ons-list-item>
+{{/eachWhitJSONparse}}
+{{/ifCurrentUser}}
+
+{{#ifnotOwner data.owner}}
+    {{#eachWhitJSONparse data.abogados}}
+     <ons-list-item id="{{@index}}abogado">
+      <div class="left">
+        <img class="list-item__thumbnail" src="{{square}}">
+      </div>
+      <div class="center">
+        <span class="list-item__title">{{nombre}} {{apellidos}}</span><span class="list-item__subtitle">{{email}}</span>
+      </div>
+    </ons-list-item>
+    {{/eachWhitJSONparse}}
+{{/ifnotOwner}}
+</ons-list>
+{{/each}}
+<script>
+  function remove_by_team(id, user){
+        var userSession = window.localStorage.getItem("userSession");
+        userSession = JSON.parse(userSession);
+        var params_to_send = {
+          user: user,
+          byuser: userSession.user.email
+         }
+         var url = "{{{productionServer}}}/api/law/remove_team";
+         $.ajax({
+          url: url,
+          cache: true,
+          data: params_to_send,
+          method: 'POST',
+          success: function(data) {
+            ons.notification.alert(data.notice);
+            $('#'+id).remove();
+          },
+          error: function(err) {
+            callback(null, err);
+          }
+        });
+  }
+</script>

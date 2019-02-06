@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+ 	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  font-src 'self' https://fonts.gstatic.com data:; media-src *; img-src * data: content:; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval';">
+ 	<meta Access-Control-Allow-Origin: * >
+    <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <link rel="stylesheet" href="css/onsenui.css">
+    <link rel="stylesheet" href="css/onsen-css-components.css">
+    <link rel="stylesheet" href="css/particular.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="js/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/onsenui.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+	<script src="js/handlebarsx.js"></script>
+    <script src="js/hb-helper.js"></script>
+    <title>Legal Connect</title>
+</head>
+<body id="newbody">
+	<br/><br/><br/>
+	<center>Cargando componentes <ons-progress-circular indeterminate></ons-progress-circular> </center>
+	<div id="carga" style="display: none;">
+	<center><p>En caso de que la aplicación este tardando en cargar dale click en <br/>
+		<a onclick="loadDevice();" class="button--large--cta" style="width: 90%;">Recargar</a></p></center>
+    </div>
+	<script type="text/javascript">
+	      setTimeout(function(){
+		     $('#carga').show();
+	      }, 10000);
+	</script>
+</body>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+	   var sessionIN = window.localStorage.getItem("loggedIn");
+       
+	   $(document).ready(function(){
+
+	   		if (ons.platform.isIPhoneX()) { // Utility function
+			  // Add empty attribute to the <html> element
+			  document.documentElement.setAttribute('onsflag-iphonex-landscape', '');
+			}
+
+		    beforeMount();
+
+
+	      var loggin = sessionLoggin();
+	      var deviceSTREAM = window.localStorage.getItem("devicePlatform");
+	      setTimeout(function(){
+		      if(loggin == 1){
+			       if(deviceSTREAM == 'Android'){
+			       	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			       }else{
+			      	/*loadpage("menu","newbody","js/json/menu-tabs.json");*/
+			      	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			       }
+		      
+		      }else{
+			       if(deviceSTREAM == 'Android'){
+			      	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			      	appendpageFree("loggin","newbody","js/json/loggin.json");
+			       }else{
+			        /*loadpage("menu","newbody","js/json/menu-tabs.json");
+			        appendpage("loggin","newbody","js/json/loggin.json");*/
+			        loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			      	appendpageFree("loggin","newbody","js/json/loggin.json");
+			       }
+		      }
+	      },1000);
+	    });
+
+	    function loadDevice(){
+	    	var loggin = sessionLoggin();
+	        var deviceSTREAM = window.localStorage.getItem("devicePlatform");
+		      if(loggin == 1){
+			       if(deviceSTREAM == 'Android'){
+			       	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			       }else{
+			      	/*loadpage("menu","newbody","js/json/menu-tabs.json");*/
+			      	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+
+			       }
+		      
+		      }else{
+			       if(deviceSTREAM == 'Android'){
+			      	loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			      	appendpageFree("loggin","newbody","js/json/loggin.json");
+			       }else{
+			        /*loadpage("menu","newbody","js/json/menu-tabs.json");
+			        appendpage("loggin","newbody","js/json/loggin.json");*/
+			        loadpageFree("menu","newbody","js/json/menu-tabs.json");
+			      	appendpageFree("loggin","newbody","js/json/loggin.json");
+			       }
+		      }
+		}
+
+	    function sessionLoggin(callback){
+	      var sessionNINg = window.sessionIN;
+	      if(sessionNINg != 'true'){
+	        window.localStorage.setItem("loggedIn", false);
+	        var session = 0;
+	      }else{
+	        window.localStorage.setItem("loggedIn", true);
+	        var session = 1;
+	      }
+	      sessionNINg = window.localStorage.getItem("loggedIn");
+	      return session;
+	   }
+
+	   function exit(){
+	      sessionNINg = window.localStorage.setItem("loggedIn", false);
+	      window.localStorage.setItem("userSession",null);
+	      location.reload();
+	    }
+
+	    document.addEventListener("deviceready", listenDEvise, false);
+
+	      function listenDEvise() {
+	        console.log(device.uuid);
+	        var device_data = {
+	           modelo:      device.model,
+	           plataforma:  device.platform,
+	           uuid:        device.uuid,
+	           version:     device.version,
+	           manufacture: device.manufacturer,
+	           virtual:     device.isVirtual,
+	           serial:      device.serial
+	        }
+
+	        var plataforma = device.platform;
+	        var plataforma = window.localStorage.setItem("devicePlatform", plataforma);
+	        var deviceData = window.localStorage.setItem("devicePropieties", JSON.stringify(device_data));
+	        deviceData = window.localStorage.getItem("devicePropieties");
+
+	      }
+        
+
+        function beforeMount() {
+		  const html = document.documentElement;
+		  if (this.$ons.platform.isIPhoneX()) {
+		   html.setAttribute('onsflag-iphonex-portrait', '');
+           html.setAttribute('onsflag-iphonex-landscape', '');
+		  }
+		}
+
+    </script>
+
+</html>
+

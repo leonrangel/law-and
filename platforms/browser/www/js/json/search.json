@@ -1,0 +1,16 @@
+{
+	"headimage": "img/logo.png",
+	"buscar": "Buscar",
+	"legend": "¿Eres abogado o fírma?, anunciate aquí",
+	"categorias": [
+		{"id": 1, "title": "Laboral", "search": "derecho laboral", "icon": "fa-briefcase", "class": "border-right-botton-solid"},
+		{"id": 2, "title": "Admnistrativo", "search": "derecho admnistrativo", "icon": "fa-book", "class": "bottom-solid"},
+		{"id": 3, "title": "Impuestos", "search": "Impuestos","icon": "fa-bar-chart", "class": "border-left-botton-solid"},
+		{"id": 4, "title": "Empleados", "search": "derecho laboral", "icon": "fa-users","class": "border-right-botton-solid"},
+		{"id": 5, "title": "Fiscal", "search": "derecho fiscal", "icon": "fa-dollar","class": "bottom-solid"},
+		{"id": 6, "title": "Declaraciones", "search": "derecho fiscal","icon": "fa-file-text", "class": "border-left-botton-solid"},
+		{"id": 7, "title": "SAT - IMMS", "search": "SAT","icon": "fa-building", "class": "right-solid"},
+		{"id": 8, "title": "Créditos fiscales", "search": "derecho fiscal","icon": "fa-bank", "class": ""},
+		{"id": 9, "title": "CFE - INFONNAVIT", "search": "fiscal","icon": "fa-home", "class": "left-solid"}
+	]
+}
